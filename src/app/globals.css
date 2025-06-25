@@ -1,0 +1,268 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "GeneralSans";
+  src: url("/fonts/GeneralSans-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "GeneralSans-Medium";
+  src: url("/fonts/GeneralSans-Medium.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "GeneralSans-Semibold";
+  src: url("/fonts/GeneralSans-Semibold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "GeneralSans-Bold";
+  src: url("/fonts/GeneralSans-Bold.otf") format("opentype");
+}
+
+body {
+  font-family: "GeneralSans", sans-serif;
+}
+
+/* For Webkit-based browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 4px; /* Scrollbar width (smaller) */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track color */
+  border-radius: 20px; /* More rounded track */
+}
+
+::-webkit-scrollbar-thumb {
+  /* background: #c0f765; Scrollbar handle color */
+  border-radius: 10px; /* More rounded thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  /* background: #b1e55e; Darker shade when hovered */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin; /* Make it thinner */
+  /* scrollbar-color: #c0f765 #f1f1f1; Thumb color and track color */
+}
+
+/* hide scrollbar class */
+.hidden-scrollbar {
+  scrollbar-width: none; /* Firefox */
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.font-general-medium {
+  font-family: "GeneralSans-Medium", sans-serif;
+}
+
+.font-general-semibold {
+  font-family: "GeneralSans-Semibold", sans-serif;
+}
+
+.font-general-bold {
+  font-family: "GeneralSans-Bold", sans-serif;
+}
+
+/* Primary colors */
+
+.text-primary {
+  color: #c0f765;
+}
+
+.bg-primary {
+  background-color: #c0f765;
+}
+
+.bg-primary-10 {
+  background-color: #c0f765;
+}
+
+.border-primary {
+  border-color: #c0f765;
+}
+
+.outline-primary {
+  outline-color: #c0f765;
+}
+
+/* Secondary colors */
+
+.bg-secondary {
+  background-color: #2c2c2e;
+}
+
+/* Text dark color */
+
+.text-dark {
+  color: #212121;
+}
+
+/* Text Description */
+
+.text-desc {
+  color: #565656;
+}
+
+.section-heading {
+  color: #212121;
+  font-family: "GeneralSans-Semibold", sans-serif;
+  font-size: 32px;
+}
+
+/* Sub text user details  */
+
+.sub-text {
+  font-weight: 500;
+  font-size: 14px;
+  color: #565656;
+}
+
+/* Separator */
+
+.separator {
+  border-bottom: 1px solid #eaeaea;
+}
+
+/* Popup animation */
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes popupIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes popupOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.animate-fadeOut {
+  animation: fadeOut 0.2s ease-out forwards;
+}
+
+.animate-popupIn {
+  animation: popupIn 0.2s ease-out forwards;
+}
+
+.animate-popupOut {
+  animation: popupOut 0.2s ease-out forwards;
+}
+
+/* Logo loader main */
+.loader-logo .dot {
+  width: 24px;
+  height: 24px;
+  background: #c0f765;
+  border-radius: 100%;
+  display: inline-block;
+  animation: slide 1s infinite;
+}
+.loader-logo .dot:nth-child(1) {
+  animation-delay: 0.1s;
+  background: #bff765b7; /* Blue */
+}
+.loader-logo .dot:nth-child(2) {
+  animation-delay: 0.2s;
+  background: #bff76590; /* Blue transitioning to teal */
+}
+.loader-logo .dot:nth-child(3) {
+  animation-delay: 0.3s;
+  background: #bff7657d; /* Muted Blue with a Warm Tone */
+}
+.loader-logo .dot:nth-child(4) {
+  animation-delay: 0.4s;
+  background: #bff765b7; /* Warm brownish-orange */
+}
+.loader-logo .dot:nth-child(5) {
+  animation-delay: 0.5s;
+  background: #c0f765; /* Orange */
+}
+
+@-moz-keyframes slide {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@-webkit-keyframes slide {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@-o-keyframes slide {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes slide {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
