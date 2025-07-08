@@ -211,9 +211,11 @@ const CommunityDetails = () => {
           </div>
 
           <DangerPopup
-            title="Disable Community"
-            desc="Are you sure you want to disable this community?"
-            doneTitle="Yes, Disable Now"
+            title={`${communityDetails?.community?.isDisabled ? "Enable" : "Disable"} Community`}
+            desc={`Are you sure you want to ${
+              communityDetails?.community?.isDisabled ? "enable" : "disable"
+            } this community?`}
+            doneTitle={`Yes, ${communityDetails?.community?.isDisabled ? "Enable" : "Disable"} Now`}
             show={showAlert.disable}
             onClose={() => handleToggleDisablePopup(false)}
             onContinue={handleDisableCommunity}
