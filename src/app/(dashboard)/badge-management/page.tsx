@@ -110,6 +110,13 @@ const BadgeManagement = () => {
         "Awarded to members who help others with career advice or referrals. Helping others climb the ladder of success.\n",
       icon: "https://bioyapp.s3.us-east-2.amazonaws.com/1743786020085-career%20builder.svg",
     },
+    {
+      _id: "685b0d93861ed2a1ca3bbeb1",
+      name: "Founding Member Badge",
+      description:
+        "Awarded to early adopters who joined during the platform’s inception. Your support laid the foundation for our community’s growth and success.\n",
+      icon: "https://bioyapp.s3.us-east-2.amazonaws.com/1750797663338-founding_member_badge.svg",
+    },
   ];
 
   const [searchValue, setSearchValue] = useState<string>("");

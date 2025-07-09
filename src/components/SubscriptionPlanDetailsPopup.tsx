@@ -51,7 +51,7 @@ const SubscriptionPlanDetailsPopup: React.FC<
             <div className="ps-4 border-s border-[#eaeaea]">
               <p className="text-desc">Subscription Price</p>
               <p>
-                <span className="font-general-semibold">${plan.price}</span>/mo
+                <span className="font-general-semibold">${plan.price}</span>/yr
               </p>
             </div>
           </div>

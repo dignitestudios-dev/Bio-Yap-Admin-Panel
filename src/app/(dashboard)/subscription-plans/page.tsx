@@ -14,7 +14,7 @@ const SubscriptionPlans = () => {
       features: [],
       _id: "6850a4ab74c367b01f2ecd67",
       title: "BioYap Premium Plan",
-      price: 19.99,
+      price: 24.99,
       description: [
         "Access to advanced networking tools specific to biopharma professionals",
         "Direct messaging and video intros",
@@ -23,7 +23,7 @@ const SubscriptionPlans = () => {
         "Early access to invite-only rooms and premium features",
         "Exclusive badge icons for Founding Members and Premium users",
       ],
-      productId: "monthly_premium_plan",
+      productId: "Yearly",
       createdAt: "2025-06-16T23:11:39.970Z",
       updatedAt: "2025-06-16T23:11:39.970Z",
       __v: 0,
@@ -95,7 +95,7 @@ const SubscriptionPlans = () => {
                 <td className="px-4 py-6">{plan?.productId}</td>
                 <td className="px-4 py-6">
                   <span className="font-general-semibold">${plan?.price}</span>
-                  /mo
+                  /yr
                 </td>
                 <td
                   className="px-4 py-6 text-nowrap underline cursor-pointer"
