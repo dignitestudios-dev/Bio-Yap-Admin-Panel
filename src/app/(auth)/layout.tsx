@@ -7,7 +7,7 @@ export default function AuthLayout({
     <div className="grid grid-cols-2 gap-10 h-screen bg-[#FCFCFC] p-6">
       <div
         className={`rounded-2xl h-full w-full flex items-end bg-gray-400 bg-cover bg-center overflow-hidden`}
-        style={{ backgroundImage: "url(/images/auth-image.png)" }}
+        style={{ backgroundImage: "url(/images/auth-image.jpg)" }}
       >
         <div className="w-full p-6 bg-gradient-to-t from-black to-transparent">
           <div>
