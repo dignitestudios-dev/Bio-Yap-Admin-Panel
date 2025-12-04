@@ -51,9 +51,9 @@ const Dashboard = () => {
         <DashboardFigure title="Total Product Sales" value={5489} />
         <DashboardFigure title="Total Sales Revenue" value={`$${5400}`} /> */}
       </div>
-      {/* <div className="p-4 bg-white rounded-2xl">
+      <div className="p-4 bg-white rounded-2xl">
         <SubscriptionSalesChart />
-      </div> */}
+      </div>
 
       <div className="p-4 bg-white rounded-2xl">
         <TotalUsersChart

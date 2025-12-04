@@ -96,6 +96,17 @@ export interface CommunityInterface {
   isDisabled: boolean;
 }
 
+export interface ProductInterface {
+  _id: string;
+  title: string;
+  description: string;
+  createdAt: string;
+  price: number;
+  quantity: number;
+  isDisabled: boolean;
+  pictures: string[];
+}
+
 export interface CommunityMembersInterface {
   _id: string;
   fullName: string;

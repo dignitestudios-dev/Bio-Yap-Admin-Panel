@@ -22,6 +22,9 @@ import SubscriptionPlansSelected from "./icons/sidebar/SubscriptionPlansSelected
 import PushNotificationsSelected from "./icons/sidebar/PushNotificationsSelected";
 import GroupManagement from "./icons/sidebar/GroupManagement";
 import GroupManagementSelected from "./icons/sidebar/GroupManagementSelected";
+import WithDrawalRequest from "@/app/(dashboard)/withdrawal-request/page";
+import { AiFillProduct } from "react-icons/ai";
+import { FaReceipt } from "react-icons/fa";
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -57,6 +60,18 @@ const Sidebar = () => {
       path: "/badge-management",
       icon: <BadgesManagement />,
       iconSelected: <BadgesManagementSelected />,
+    },
+    {
+      title: "Product Management",
+      path: "/product-management",
+      icon: <AiFillProduct size={22} />,
+      iconSelected: <AiFillProduct size={22} />,
+    },
+    {
+      title: "Withdrawal Request",
+      path: "/withdrawal-request",
+      icon: <FaReceipt />,
+      iconSelected: <FaReceipt />,
     },
     {
       title: "Reported Content",

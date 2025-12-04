@@ -8,6 +8,7 @@ import {
   GroupInterface,
   PostDetailsInterface,
   PostInterface,
+  ProductInterface,
   ReportedGroupsInterface,
   ReportedPostInterface,
   ReportedUsersInterface,
@@ -425,6 +426,79 @@ const useGetGroupDetails = () => {
   return { loading, group, getGroupById };
 };
 
+const useGetProducts = () => {
+  const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState<ProductInterface[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(1);
+
+  const getProducts = async (
+    search: string,
+    page?: number,
+    limit?: number
+  ): Promise<boolean> => {
+    setLoading(true);
+    try {
+      const response = await api.getProducts(search, page, limit);
+      setProducts(response?.data?.products);
+      setTotalPages(response?.data?.totalPages);
+      return true;
+    } catch (error) {
+      utils.handleError(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, totalPages, products, getProducts };
+};
+
+const useGetProductDetails = () => {
+  const [loading, setLoading] = useState(false);
+  const [product, setProduct] = useState<ProductInterface | null>(null);
+
+  const getProductById = async (id: string): Promise<void> => {
+    setLoading(true);
+    try {
+      const response = await api.getProductById(id);
+      setProduct(response?.data?.product);
+    } catch (error) {
+      utils.handleError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, product, getProductById };
+};
+
+const useGetWithdrawalRequests = () => {
+  const [loading, setLoading] = useState(false);
+  const [withdrawals, setWithdrawals] = useState<any[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(1);
+
+  const getWithdrawals = async (
+    status: string = "pending",
+    page?: number,
+    limit?: number
+  ): Promise<boolean> => {
+    setLoading(true);
+    try {
+      const response = await api.getWithdrawalRequests(status, page, limit);
+      setWithdrawals(response?.data?.withdrawals || []);
+      setTotalPages(response?.data?.totalPages || 1);
+      return true;
+    } catch (error) {
+      utils.handleError(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, withdrawals, totalPages, getWithdrawals };
+};
+
 export const getHooks = {
   useGetAllUsers,
   useGetUsersDetails,
@@ -439,4 +513,7 @@ export const getHooks = {
   useGetReportedGroups,
   useGetAllGroups,
   useGetGroupDetails,
+  useGetProducts,
+  useGetProductDetails,
+  useGetWithdrawalRequests,
 };

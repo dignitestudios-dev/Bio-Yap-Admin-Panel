@@ -18,6 +18,7 @@ import {
   NotificationInterface,
   CreateNotificationInterface,
   UserGrowthAnalytics,
+  ProductInterface,
 } from "./types";
 
 // Create an Axios instance
@@ -30,12 +31,23 @@ const API = axios.create({
   },
 });
 
+const PRODUCTAPI = axios.create({
+  baseURL: `${process.env.NEXT_PUBLIC_SERVER_URL}/api`,
+  withCredentials: true,
+  timeout: 10000, // Set a timeout (optional)
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 // Request Interceptor
 API.interceptors.request.use(
   (config) => {
     const token = Cookies.get("token"); // Retrieve token from storage
     if (token) {
+      config.headers = config.headers || {};
       config.headers.Token = `${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -44,6 +56,34 @@ API.interceptors.request.use(
 
 // Response Interceptor
 API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error?.response?.status === 401) {
+      Cookies.remove("token"); // Remove token if unauthorized
+      window.location.href = "/login"; // Redirect to login page
+    }
+    console.log(error);
+    console.log("API Error:", error.response?.data || error);
+    return Promise.reject(error);
+  }
+);
+
+// Request Interceptor
+PRODUCTAPI.interceptors.request.use(
+  (config) => {
+    const token = Cookies.get("token"); // Retrieve token from storage
+    if (token) {
+      config.headers = config.headers || {};
+      config.headers.Token = `${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response Interceptor
+PRODUCTAPI.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error?.response?.status === 401) {
@@ -296,6 +336,16 @@ const createCommunity = (title: string, description: string) =>
     message: string;
   }>(() => API.post(`/community/create-community`, { title, description }));
 
+const createProduct = (formData: FormData) =>
+  apiHandler<{
+    success: boolean;
+    message: string;
+  }>(() =>
+    PRODUCTAPI.post(`/inApp/addProduct`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+  );
+
 const updateCommunity = (id: string, title: string, description: string) =>
   apiHandler<{
     success: boolean;
@@ -506,6 +556,65 @@ const getUserGrowthAnalytics = (startYear: string, endYear: string) =>
     API.get(`/analytics/user-growth?startYear=${startYear}&endYear=${endYear}`)
   );
 
+const getProducts = (
+  search: string,
+  page: number = defaultPage,
+  limit: number = defaultLimit
+) =>
+  apiHandler<{
+    success: boolean;
+    message: string;
+    data: {
+      products: ProductInterface[];
+      currentPage: number;
+      totalCommunities: number;
+      totalPages: number;
+      searchQuery: string;
+      hasSearch: boolean;
+    };
+  }>(() => PRODUCTAPI.get(`inApp/getProductsAdmin`));
+
+const getProductById = (id: string) =>
+  apiHandler<{
+    success: boolean;
+    message: string;
+    data: {
+      product: ProductInterface;
+    };
+  }>(() => PRODUCTAPI.get(`/inApp/getProductByIdAdmin/${id}`));
+
+// ########################### WITHDRAWAL API's ###########################
+
+const getWithdrawalRequests = (
+  status: string = "pending",
+  page: number = defaultPage,
+  limit: number = 20
+) =>
+  apiHandler<{
+    success: boolean;
+    message: string;
+    data: {
+      withdrawals: any[];
+      currentPage: number;
+      totalPages: number;
+      limit: number;
+    };
+  }>(() =>
+    API.get(`/withdrawal/requests?status=${status}&page=${page}&limit=${limit}`)
+  );
+
+const acceptWithdrawal = (id: string) =>
+  apiHandler<{
+    success: boolean;
+    message: string;
+  }>(() => API.post(`/withdrawal/approve`, { withdrawalId: id }));
+
+const rejectWithdrawal = (id: string, reason?: string) =>
+  apiHandler<{
+    success: boolean;
+    message: string;
+  }>(() => API.post(`/withdrawal/reject`, { withdrawalId: id, reason }));
+
 const api = {
   login,
   getAllUsers,
@@ -536,5 +645,26 @@ const api = {
   getAllNotifications,
   createNotification,
   getUserGrowthAnalytics,
+  getProducts,
+  createProduct,
+  getProductById,
+  getWithdrawalRequests,
+  acceptWithdrawal,
+  rejectWithdrawal,
 };
+// Helper to manually set/remove auth token on both instances (useful after login)
+export const setAuthToken = (token?: string) => {
+  if (token) {
+    API.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    API.defaults.headers.common["Token"] = token;
+    PRODUCTAPI.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    PRODUCTAPI.defaults.headers.common["Token"] = token;
+  } else {
+    delete API.defaults.headers.common["Authorization"];
+    delete API.defaults.headers.common["Token"];
+    delete PRODUCTAPI.defaults.headers.common["Authorization"];
+    delete PRODUCTAPI.defaults.headers.common["Token"];
+  }
+};
+
 export default api;

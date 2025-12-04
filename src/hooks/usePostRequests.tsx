@@ -1,7 +1,7 @@
 import { toast } from "react-hot-toast";
 import Cookies from "js-cookie";
 import { useState } from "react";
-import api from "../lib/services";
+import api, { setAuthToken } from "../lib/services";
 import { CommunityInterface, LoginInterface } from "../lib/types";
 import { useRouter } from "next/navigation";
 import { utils } from "@/lib/utils";
@@ -35,6 +35,8 @@ const useLogin = () => {
 
       Cookies.set("token", data?.data?.token);
       Cookies.set("admin", JSON.stringify(data?.data?.admin));
+      // Ensure axios instances include the Authorization header immediately
+      setAuthToken(data?.data?.token);
       router.push("/");
     } catch (error: any) {
       utils.handleError(error);
@@ -210,6 +212,89 @@ const useCreateCommunity = () => {
   return { loading, createCommunity };
 };
 
+const useCreateProduct = () => {
+  const [loading, setLoading] = useState(false);
+
+  const createProduct = async (
+    title: string,
+    quantity: number,
+    price: number,
+    description: string,
+    files: File[]
+  ): Promise<boolean> => {
+    setLoading(true);
+    try {
+      if (!title) {
+        toast.error("Product title is required");
+        return false;
+      }
+      if (!description) {
+        toast.error("Product description is required");
+        return false;
+      }
+      if (!price) {
+        toast.error("Product price is required");
+        return false;
+      }
+
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("quantity", String(quantity));
+      formData.append("price", String(price));
+      formData.append("description", description);
+
+      files.forEach((f) => {
+        formData.append("file", f);
+      });
+
+      const response = await api.createProduct(formData);
+      toast.success(response?.message);
+      return true;
+    } catch (error) {
+      utils.handleError(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, createProduct };
+};
+
+const useProcessWithdrawal = () => {
+  const [loading, setLoading] = useState(false);
+
+  const accept = async (id: string): Promise<boolean> => {
+    setLoading(true);
+    try {
+      const response = await api.acceptWithdrawal(id);
+      toast.success(response?.message);
+      return true;
+    } catch (error) {
+      utils.handleError(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // const reject = async (id: string, reason?: string): Promise<boolean> => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await api.rejectWithdrawal(id);
+  //     toast.success(response?.message);
+  //     return true;
+  //   } catch (error) {
+  //     utils.handleError(error);
+  //     return false;
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  return { loading, accept };
+};
+
 export const postHooks = {
   useLogin,
   useToggleSuspendUser,
@@ -217,4 +302,6 @@ export const postHooks = {
   useVerifyOtp,
   useResetPassword,
   useCreateCommunity,
+  useCreateProduct,
+  useProcessWithdrawal,
 };

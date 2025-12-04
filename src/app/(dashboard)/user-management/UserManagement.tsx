@@ -38,9 +38,9 @@ const UserManagement = () => {
     getAllUsers(searchValueDebounce, selectedTab);
   }, [searchValueDebounce, selectedTab]);
 
-  const onPageChange = (page: number) => {
-    getAllUsers(searchValueDebounce, selectedTab, page);
-  };
+    const onPageChange = (page: number) => {
+      getAllUsers(searchValueDebounce, selectedTab, page);
+    };
 
   return (
     <>
