@@ -16,7 +16,7 @@
     "date-fns": "^3.6.0",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.446.0",
-    "next": "15.3.2",
+    "next": "15.3.6",
     "rc-select": "^14.16.8",
     "react": "^19.0.0",
     "react-day-picker": "^8.10.1",
