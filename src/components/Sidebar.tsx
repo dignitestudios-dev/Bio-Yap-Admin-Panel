@@ -3,7 +3,6 @@ import React, { useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Cookies from "js-cookie";
-
 import UserManagement from "./icons/sidebar/UserManagement";
 import CommunityManagement from "./icons/sidebar/CommunityManagement";
 import BadgesManagement from "./icons/sidebar/BadgesManagement";
@@ -24,7 +23,7 @@ import GroupManagement from "./icons/sidebar/GroupManagement";
 import GroupManagementSelected from "./icons/sidebar/GroupManagementSelected";
 import WithDrawalRequest from "@/app/(dashboard)/withdrawal-request/page";
 import { AiFillProduct } from "react-icons/ai";
-import { FaReceipt } from "react-icons/fa";
+import { FaOpencart, FaReceipt } from "react-icons/fa";
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -42,6 +41,12 @@ const Sidebar = () => {
       path: "/user-management",
       icon: <UserManagement />,
       iconSelected: <UserManagementSelected />,
+    },
+    {
+      title: "Orders",
+      path: "/orders",
+      icon: <FaOpencart />,
+      iconSelected: <FaOpencart />,
     },
     {
       title: "Community Management",

@@ -6,6 +6,8 @@ import {
   FollowingInterface,
   GroupDetailsInterface,
   GroupInterface,
+  OrderDetailsInterface,
+  OrderInterface,
   PostDetailsInterface,
   PostInterface,
   ProductInterface,
@@ -57,7 +59,52 @@ const useGetAllUsers = () => {
 
   return { loading, users, totalPages, getAllUsers };
 };
+const useGetAllOrders = () => {
+  const [loading, setLoading] = useState(true);
+  const [orders, setOrders] = useState<OrderInterface[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(1);
 
+  const getAllOrders = async (
+    search: string,
+    orderStatus: string = "",
+    page?: number,
+    limit?: number
+  ) => {
+    setLoading(true);
+    try {
+      const response = await api.getAllOrders(search, orderStatus, page, limit);
+
+      setOrders(response?.orders);
+      setTotalPages(response?.pagination?.totalPages);
+    } catch (error) {
+      utils.handleError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, orders, totalPages, getAllOrders };
+};
+
+const useGetOrdersDetails = () => {
+  const [loading, setLoading] = useState(true);
+  const [order, setOrder] = useState<OrderDetailsInterface | null>(null);
+
+  const getOrderById = async (id: string) => {
+    setLoading(true);
+    try {
+      const response = await api.getOrderById(id);
+      console.log("User details API call: ", response);
+      setOrder(response?.order);
+    } catch (error) {
+      utils.handleError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, order, setOrder, getOrderById };
+};
 const useGetUsersDetails = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<UserDetailsInterface | null>(null);
@@ -516,4 +563,6 @@ export const getHooks = {
   useGetProducts,
   useGetProductDetails,
   useGetWithdrawalRequests,
+  useGetAllOrders,
+  useGetOrdersDetails,
 };

@@ -19,6 +19,8 @@ import {
   CreateNotificationInterface,
   UserGrowthAnalytics,
   ProductInterface,
+  OrderInterface,
+  OrderDetailsInterface,
 } from "./types";
 
 // Create an Axios instance
@@ -86,10 +88,10 @@ PRODUCTAPI.interceptors.request.use(
 PRODUCTAPI.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error?.response?.status === 401) {
-      Cookies.remove("token"); // Remove token if unauthorized
-      window.location.href = "/login"; // Redirect to login page
-    }
+    // if (error?.response?.status === 401) {
+    //   Cookies.remove("token"); // Remove token if unauthorized
+    //   window.location.href = "/login"; // Redirect to login page
+    // }
     console.log(error);
     console.log("API Error:", error.response?.data || error);
     return Promise.reject(error);
@@ -252,6 +254,33 @@ const getUserById = (id: string) =>
       user: UserDetailsInterface;
     };
   }>(() => API.get(`/auth/get-user-by-id/${id}`));
+
+const getAllOrders = (
+  search: string = "",
+  orderStatus: string,
+  page: number = defaultPage,
+  limit: number = defaultLimit
+) =>
+  apiHandler<{
+    success: boolean;
+    pagination: {
+      currentPage: number;
+      totalPages: number;
+      totalOrders: number;
+    };
+    orders: OrderInterface[];
+  }>(() =>
+    PRODUCTAPI.get(
+      `inApp/getOrders?page=${page}&orderStatus=${orderStatus}&limit=${limit}&search=${search}`
+    )
+  );
+const getOrderById = (id: string) =>
+  apiHandler<{
+    success: boolean;
+    message: string;
+
+    order: OrderDetailsInterface;
+  }>(() => PRODUCTAPI.get(`inApp/getOrders/${id}`));
 
 // ########################### POST API's ###########################
 
@@ -515,6 +544,16 @@ const disableGroupById = (id: string, status: boolean) =>
     message: string;
     group: { isDisabled: boolean };
   }>(() => API.put(`/group/disable-group/${id}`, { isDisabled: status }));
+const updateOrderStatus = (id: string, status: string) =>
+  apiHandler<{
+    success: boolean;
+    message: string;
+  }>(() =>
+    PRODUCTAPI.post(`inApp/updateOrderStatus`, {
+      orderId: id,
+      status, // string: cancelled, inProcess, delivered, etc.
+    })
+  );
 
 // ########################### NOTIFICATION API's ###########################
 
@@ -651,6 +690,9 @@ const api = {
   getWithdrawalRequests,
   acceptWithdrawal,
   rejectWithdrawal,
+  getAllOrders,
+  getOrderById,
+  updateOrderStatus
 };
 // Helper to manually set/remove auth token on both instances (useful after login)
 export const setAuthToken = (token?: string) => {

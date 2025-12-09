@@ -62,7 +62,10 @@ const useDisableCommunity = () => {
 const useDisableGroup = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const disableGroup = async (id: string, status: boolean): Promise<boolean> => {
+  const disableGroup = async (
+    id: string,
+    status: boolean
+  ): Promise<boolean> => {
     setLoading(true);
     try {
       const response = await api.disableGroupById(id, status);
@@ -78,9 +81,49 @@ const useDisableGroup = () => {
 
   return { loading, disableGroup };
 };
+export const useUpdateOrderStatus = () => {
+  const [loading, setLoading] = useState<boolean>(false);
 
+  const updateOrderStatus = async (
+    orderId: string,
+    newStatus: string,
+    currentStatus?: string,
+    reason?: string
+  ) => {
+    setLoading(true);
+    try {
+      if (currentStatus) {
+        const statusOrder = [
+          "inProgress",
+          "orderConfirmed",
+          "inProcess",
+          "delivered",
+          "cancelled",
+        ];
+        const currentIndex = statusOrder.indexOf(currentStatus);
+        const newIndex = statusOrder.indexOf(newStatus);
+
+        if (newIndex < currentIndex && newStatus !== "cancelled") {
+          throw new Error("Cannot revert to previous status");
+        }
+      }
+
+      const response = await api.updateOrderStatus(orderId, newStatus);
+      toast.success(response.message);
+      return true;
+    } catch (error: any) {
+      toast.error(error.message || "Failed to update status");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, updateOrderStatus };
+};
 export const updateHooks = {
   useUpdateCommunity,
   useDisableCommunity,
   useDisableGroup,
+  useUpdateOrderStatus,
 };

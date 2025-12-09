@@ -12,6 +12,51 @@ export interface UserInterface {
   isSuspended: boolean;
   profilePicture: string | null;
 }
+export interface UserInfoInterface {
+  _id: string;
+  fullName: string;
+  profilePicture: string | null;
+}
+export interface OrderInterface {
+  _id: string;
+  orderId: string;
+  deliveryAddress: string;
+  totalAmount: number;
+  orderStatus: string;
+  createdAt: string;
+  userId: UserInfoInterface;
+  products: ProductInterface[];
+}
+// types/order.ts
+export interface UserInterface {
+  _id: string;
+  fullName: string;
+  phoneNumber: string;
+  email: string;
+  profilePicture: string | null;
+}
+
+export interface ProductInterface {
+  _id: string;
+  title: string;
+  pictures: string[];
+  price: number;
+  quantity: number;
+}
+
+export interface OrderDetailsInterface {
+  _id: string;
+  orderId: string;
+  user: UserInterface;
+  orderStatus: string;
+  totalAmount: number;
+  deliveryAddress: string;
+  reason?: string;
+  createdAt: string;
+  updatedAt: string;
+  products: ProductInterface[];
+}
+
 
 export interface UserDetailsInterface {
   fullName: string;
