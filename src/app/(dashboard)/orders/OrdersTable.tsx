@@ -20,7 +20,7 @@ const OrdersTable = () => {
   ];
 
   const tabStatusMap: { [key: number]: string } = {
-    0: "", // All
+    0: "",
     1: "inProgress",
     2: "orderConfirmed",
     3: "inProcess",
@@ -39,7 +39,7 @@ const OrdersTable = () => {
   const searchValueDebounce: string = useDebounceSearch(searchValue);
 
   useEffect(() => {
-    currentTab && ["0", "1", "2"].includes(currentTab)
+    currentTab && ["0", "1", "2", "3", "4", "5"].includes(currentTab)
       ? setSelectedTab(currentTab as SelectedTabs)
       : setSelectedTab("0");
   }, [currentTab]);
@@ -91,7 +91,7 @@ const OrdersTable = () => {
           </div>
         </div>
 
-            {/* <div className="bg-white rounded-lg w-[250px] h-[50px] flex items-center gap-2 px-4">
+        {/* <div className="bg-white rounded-lg w-[250px] h-[50px] flex items-center gap-2 px-4">
             <Search />
 
             <input
@@ -134,60 +134,65 @@ const OrdersTable = () => {
             </thead>
 
             <tbody className="mt-10">
-              {orders?.map((order, index) => (
-                <tr key={order._id} className="border-b border-[#D4D4D4]">
-                  <td className="px-4 py-6">{index + 1}</td>
+              {orders && orders.length > 0 ? (
+                orders.map((order, index) => (
+                  <tr key={order._id} className="border-b border-[#D4D4D4]">
+                    <td className="px-4 py-6">{index + 1}</td>
 
-                  {/* Customer */}
-                  <td className="px-4 py-6">
-                    <div className="flex items-center gap-3">
-                      {order.userId?.profilePicture ? (
-                        <img
-                          src={order.userId.profilePicture}
-                          alt={order.userId.fullName}
-                          className="h-10 w-10 rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center text-white font-medium">
-                          {getInitials(order.userId?.fullName)}
-                        </div>
-                      )}
-                      <span className="font-medium">
-                        {order.userId?.fullName}
-                      </span>
-                    </div>
-                  </td>
+                    <td className="px-4 py-6">
+                      <div className="flex items-center gap-3">
+                        {order.userId?.profilePicture ? (
+                          <img
+                            src={order.userId.profilePicture}
+                            alt={order.userId.fullName}
+                            className="h-10 w-10 rounded-full object-cover"
+                          />
+                        ) : (
+                          <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center text-white font-medium">
+                            {getInitials(order.userId?.fullName)}
+                          </div>
+                        )}
+                        <span className="font-medium">
+                          {order.userId?.fullName}
+                        </span>
+                      </div>
+                    </td>
 
-                  {/* Delivery Address */}
-                  <td className="px-4 py-6">{order.deliveryAddress}</td>
+                    <td className="px-4 py-6">{order.deliveryAddress}</td>
 
-                  {/* Status */}
+                    <td
+                      className={`px-4 py-6 capitalize font-semibold ${
+                        order.orderStatus === "cancelled"
+                          ? "text-[#EE0004]"
+                          : "text-[#85D500]"
+                      }`}
+                    >
+                      {order.orderStatus}
+                    </td>
+
+                    <td className="px-4 py-6 font-medium">
+                      ${order.totalAmount.toFixed(2)}
+                    </td>
+
+                    <td className="px-4 py-6">
+                      {new Date(order.createdAt).toLocaleDateString()}
+                    </td>
+
+                    <td className="px-4 py-6 underline cursor-pointer text-blue-600">
+                      <Link href={`/orders/${order._id}`}>View Details</Link>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
                   <td
-                    className={`px-4 py-6 capitalize font-semibold ${
-                      order.orderStatus === "cancelled"
-                        ? "text-[#EE0004]"
-                        : "text-[#85D500]"
-                    }`}
+                    colSpan={7}
+                    className="text-center py-20 text-gray-500 font-medium text-lg"
                   >
-                    {order.orderStatus}
-                  </td>
-
-                  {/* Total Amount */}
-                  <td className="px-4 py-6 font-medium">
-                    ${order.totalAmount.toFixed(2)}
-                  </td>
-
-                  {/* Created Date */}
-                  <td className="px-4 py-6">
-                    {new Date(order.createdAt).toLocaleDateString()}
-                  </td>
-
-                  {/* View Details */}
-                  <td className="px-4 py-6 underline cursor-pointer text-blue-600">
-                    <Link href={`/orders/${order._id}`}>View Details</Link>
+                    No Orders Found
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
